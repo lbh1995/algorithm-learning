@@ -1,7 +1,7 @@
 package leetcode;
 
 public class LC0576 {
-    public int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+    public int findPaths1(int m, int n, int maxMove, int startRow, int startColumn) {
         final int MOD = 1000000007;
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
         int count = 0;
@@ -30,6 +30,47 @@ public class LC0576 {
             dp = newDp;
         }
         return count;
+    }
+
+    public int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+        if (maxMove == 0) {
+            return 0;
+        }
+        int MOD = 1000000007;
+        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        int[][][] mem = new int[m][n][maxMove];
+        for (int k = 0; k < maxMove; k++) {
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (i == 0) {
+                        mem[i][j][k]++;
+                    }
+                    if (j == 0) {
+                        mem[i][j][k]++;
+                    }
+                    if (i == m - 1) {
+                        mem[i][j][k]++;
+                    }
+                    if (j == n - 1) {
+                        mem[i][j][k]++;
+                    }
+                }
+            }
+        }
+        for (int k = 0; k < maxMove - 1; k++) {
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    for (int[] dir : directions) {
+                        int nextI = i + dir[0];
+                        int nextJ = j + dir[1];
+                        if (nextJ >= 0 && nextJ < n && nextI >= 0 && nextI < m) {
+                            mem[nextI][nextJ][k + 1] = (mem[nextI][nextJ][k + 1] + mem[i][j][k]) % MOD;
+                        }
+                    }
+                }
+            }
+        }
+        return mem[startRow][startColumn][maxMove - 1];
     }
 
     public static void main(String[] args) {
