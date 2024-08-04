@@ -28,6 +28,7 @@ public class LC0004 {
     }
 
     public static void main(String[] args) {
+        int m = -1%3;
         LC0004 lc0004 = new LC0004();
         lc0004.findMedianSortedArrays(new int[]{1,2}, new int[]{3,4});
     }
